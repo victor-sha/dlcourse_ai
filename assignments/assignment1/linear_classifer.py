@@ -15,7 +15,17 @@ def softmax(predictions):
     '''
     # TODO implement softmax
     # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    if predictions.ndim == 1:
+        z = predictions - np.max(predictions)
+        numerator = np.exp(z)
+        denom = np.sum(numerator)
+        return numerator/denom
+    # print(predictions)
+    print( np.max(predictions, 1))
+    z = predictions - np.max(predictions, 1)[:,None]
+    numerator = np.exp(z)
+    denom = np.sum(numerator, 1)
+    return numerator/denom[:,None]
 
 
 def cross_entropy_loss(probs, target_index):
@@ -33,7 +43,9 @@ def cross_entropy_loss(probs, target_index):
     '''
     # TODO implement cross-entropy
     # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    # raise Exception("Not implemented!")
+    # if probs.ndim == 1
+    return -np.log(probs[target_index])
 
 
 def softmax_with_cross_entropy(predictions, target_index):
@@ -53,7 +65,8 @@ def softmax_with_cross_entropy(predictions, target_index):
     '''
     # TODO implement softmax with cross-entropy
     # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    dprediction = softmax(predictions.copy())
+    loss = cross_entropy_loss(dprediction, target_index)
 
     return loss, dprediction
 
